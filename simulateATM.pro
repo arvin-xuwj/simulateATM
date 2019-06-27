@@ -25,10 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        account.cpp \
+        accountManage.cpp \
         main.cpp \
         dialog.cpp
 
 HEADERS += \
+        account.h \
+        accountManage.h \
         dialog.h
 
 FORMS += \

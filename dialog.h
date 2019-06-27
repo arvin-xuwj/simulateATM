@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <accountManage.h>
 
 namespace Ui {
 class Dialog;
@@ -27,6 +28,8 @@ private slots:
 
 private:
     Ui::Dialog *ui;
+    AccountManage *accMag;
+
 };
 
 #endif // DIALOG_H

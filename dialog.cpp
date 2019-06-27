@@ -1,5 +1,8 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include <QArrayData>
+#include <QJsonParseError>
+#include <QJsonDocument>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -7,9 +10,16 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->accMag = new AccountManage();
+
     this->resize(800, 600);
 
     switchLogin();
+
+
+    //QByteArray *byte = new QByteArray(  "{\"accounts\": [{ 		\"account\": \"1234567890\", 		\"passwd\": \"12345\", 		\"balance\": 10000 	}] }");
+
+
 }
 
 Dialog::~Dialog()
@@ -47,7 +57,7 @@ void Dialog::on_btnLogin_clicked()
     account = this->ui->editAccount->text();
     passwd  = this->ui->editPasswd->text();
 
-    if (account == passwd) {
+    if (this->accMag->verifyAccount(account, passwd)) {
         switchNormal();
     }
 }

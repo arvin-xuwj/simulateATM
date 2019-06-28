@@ -12,6 +12,10 @@ public:
     AccountManage(QString fileName);
 
     bool verifyAccount(QString account, QString passwd);
+    double getBalance(QString account);
+
+private:
+    Account* getAccount(QString account);
 
 private:
     QList<Account> users;

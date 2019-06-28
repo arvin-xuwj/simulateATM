@@ -8,7 +8,7 @@ AccountManage::AccountManage()
 
 AccountManage::AccountManage(QString fileName)
 {
-
+    (void)fileName;
 }
 
 bool AccountManage::verifyAccount(QString account, QString passwd)
@@ -24,4 +24,27 @@ bool AccountManage::verifyAccount(QString account, QString passwd)
     }
 
     return false;
+}
+
+double AccountManage::getBalance(QString account)
+{
+    if (getAccount(account) != nullptr) {
+        return getAccount(account)->getMomey();
+    }
+
+    return 0;
+}
+
+Account* AccountManage::getAccount(QString account)
+{
+    for (QList<Account>::iterator it = this->users.begin();
+         it != this->users.end();
+         it++)
+    {
+        if (it->getAccount() == account) {
+            return &*it;
+        }
+    }
+
+    return nullptr;
 }

@@ -43,6 +43,9 @@ void Dialog::switchPage(pageIndex page)
     case PAGE_SAVE:
         switchSave();
         break;
+    case PAGE_QUKUAN:
+        switchQukuan();
+        break;
     default:
         switchWelcome();
     }
@@ -102,9 +105,22 @@ void Dialog::switchQuery()
 void Dialog::switchSave()
 {
     /*
-        显示账户余额信息;
+        显示账户存款信息;
      */
     this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->indexOf(this->ui->saveMomery));
+    this->ui->btnQuery->show();
+    this->ui->btnQukuan->show();
+    this->ui->btnCunkuan->show();
+    this->ui->btnExit->show();
+    this->ui->labLoginErr->hide();
+}
+
+void Dialog::switchQukuan()
+{
+    /*
+        显示账户取款信息;
+     */
+    this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->indexOf(this->ui->qukuanPage));
     this->ui->btnQuery->show();
     this->ui->btnQukuan->show();
     this->ui->btnCunkuan->show();
@@ -159,7 +175,28 @@ void Dialog::on_btnSave_clicked()
 
     this->accMag->setBalance(this->m_account, memey);
 
-    QMessageBox::information(this, "提示信息", sz_memey.sprintf("金额: %0.2f, 已完成", memey), QMessageBox::Yes, QMessageBox::Yes);
+    QMessageBox::information(this, "提示信息", sz_memey.sprintf("金额: %0.2f, 操作已完成", memey), QMessageBox::Yes, QMessageBox::Yes);
 
     this->ui->LineEditSaveMomey->setText("");
+}
+
+void Dialog::on_btnQuKuanSure_clicked()
+{
+    QString sz_memey = this->ui->LineEditQukuanMomey->text();
+    /*
+        此处未检查输入的内容是否未全数字;
+     */
+
+    double memey = sz_memey.toDouble();
+
+    this->accMag->setBalance(this->m_account, memey * -1);
+
+    QMessageBox::information(this, "提示信息", sz_memey.sprintf("金额: %0.2f, 操作已完成", memey), QMessageBox::Yes, QMessageBox::Yes);
+
+    this->ui->LineEditQukuanMomey->setText("");
+}
+
+void Dialog::on_btnQukuan_clicked()
+{
+    switchPage(PAGE_QUKUAN);
 }

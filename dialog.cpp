@@ -3,6 +3,7 @@
 #include <QArrayData>
 #include <QJsonParseError>
 #include <QJsonDocument>
+#include <QMessageBox>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -38,6 +39,9 @@ void Dialog::switchPage(pageIndex page)
         break;
     case PAGE_QUERY:
         switchQuery();
+        break;
+    case PAGE_SAVE:
+        switchSave();
         break;
     default:
         switchWelcome();
@@ -95,6 +99,19 @@ void Dialog::switchQuery()
     this->ui->labLoginErr->hide();
 }
 
+void Dialog::switchSave()
+{
+    /*
+        显示账户余额信息;
+     */
+    this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->indexOf(this->ui->saveMomery));
+    this->ui->btnQuery->show();
+    this->ui->btnQukuan->show();
+    this->ui->btnCunkuan->show();
+    this->ui->btnExit->show();
+    this->ui->labLoginErr->hide();
+}
+
 void Dialog::on_btnQuery_clicked()
 {
     QString balance;
@@ -124,4 +141,25 @@ void Dialog::on_btnLogin_clicked()
 void Dialog::on_btnExit_clicked()
 {
     switchPage(PAGE_LOGIN);
+}
+
+void Dialog::on_btnCunkuan_clicked()
+{
+    switchPage(PAGE_SAVE);
+}
+
+void Dialog::on_btnSave_clicked()
+{
+    QString sz_memey = this->ui->LineEditSaveMomey->text();
+    /*
+        此处未检查输入的内容是否未全数字;
+     */
+
+    double memey = sz_memey.toDouble();
+
+    this->accMag->setBalance(this->m_account, memey);
+
+    QMessageBox::information(this, "提示信息", sz_memey.sprintf("金额: %0.2f, 已完成", memey), QMessageBox::Yes, QMessageBox::Yes);
+
+    this->ui->LineEditSaveMomey->setText("");
 }

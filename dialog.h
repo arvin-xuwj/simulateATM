@@ -18,6 +18,7 @@ private:
        PAGE_LOGIN = 0,
        PAGE_WELCOME,
        PAGE_QUERY,
+       PAGE_SAVE,
     };
 
     typedef enum PAGE_INDEX pageIndex;
@@ -31,11 +32,16 @@ private:
     void switchLogin();
     void switchWelcome();
     void switchQuery();
+    void switchSave();
 
 private slots:
     void on_btnQuery_clicked();
     void on_btnLogin_clicked();
     void on_btnExit_clicked();
+
+    void on_btnCunkuan_clicked();
+
+    void on_btnSave_clicked();
 
 private:
     Ui::Dialog *ui;

@@ -35,6 +35,13 @@ double AccountManage::getBalance(QString account)
     return 0;
 }
 
+void AccountManage::setBalance(QString account, double momey)
+{
+    if (getAccount(account) != nullptr) {
+        return getAccount(account)->setMomey(getAccount(account)->getMomey() + momey);
+    }
+}
+
 Account* AccountManage::getAccount(QString account)
 {
     for (QList<Account>::iterator it = this->users.begin();

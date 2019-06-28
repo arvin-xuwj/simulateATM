@@ -13,6 +13,7 @@ public:
 
     bool verifyAccount(QString account, QString passwd);
     double getBalance(QString account);
+    void   setBalance(QString account, double momey);
 
 private:
     Account* getAccount(QString account);

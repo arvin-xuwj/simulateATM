@@ -13,6 +13,7 @@ public:
 
     bool verifyAccount(QString account, QString passwd);
     double getBalance(QString account);
+    bool   getLocked(QString account);
     void   setBalance(QString account, double momey);
     void   changePasswd(QString account, QString newpasswd);
 
@@ -21,6 +22,8 @@ private:
 
 private:
     QList<Account> users;
+
+    int             tryMax;
 };
 
 #endif // ACCOUNTMANAGE_H

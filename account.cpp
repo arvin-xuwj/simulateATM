@@ -42,3 +42,13 @@ void Account::setPasswd(const QString &value)
 {
     passwd = value;
 }
+
+int Account::getTryCount() const
+{
+    return tryCount;
+}
+
+void Account::setTryCount(int value)
+{
+    tryCount = value;
+}

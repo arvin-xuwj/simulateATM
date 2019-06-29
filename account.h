@@ -22,11 +22,15 @@ public:
 
     void setPasswd(const QString &value);
 
+    int getTryCount() const;
+    void setTryCount(int value);
+
 private:
     QString account;
     QString passwd;
     double  momey;
     bool    locked;
+    int     tryCount;
 };
 
 #endif // ACCOUNT_H

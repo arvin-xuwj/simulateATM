@@ -166,6 +166,12 @@ void Dialog::on_btnLogin_clicked()
 
         switchPage(PAGE_WELCOME);
     } else {
+        if (this->accMag->getLocked(account)) {
+            this->ui->labLoginErr->setText("account locked");
+        } else {
+            this->ui->labLoginErr->setText("account or passwd error");
+        }
+
         this->ui->labLoginErr->show();
     }
 }

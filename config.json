@@ -1,0 +1,20 @@
+{
+    "accounts": [
+        {
+            "account": "123456789",
+            "memey": 10000,
+            "passwd": "111111"
+        },
+        {
+            "account": "1234",
+            "memey": 111111111131111,
+            "passwd": "111111"
+        },
+        {
+            "account": "12345",
+            "memey": 29999.9,
+            "passwd": "111111"
+        }
+    ],
+    "tryCount": 3
+}

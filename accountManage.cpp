@@ -1,4 +1,10 @@
 #include "accountManage.h"
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QFile>
 
 AccountManage::AccountManage()
 {
@@ -9,7 +15,92 @@ AccountManage::AccountManage()
 
 AccountManage::AccountManage(QString fileName)
 {
-    (void)fileName;
+    this->tryMax = 3;
+
+    this->m_file = new QFile(fileName);
+
+    if (this->m_file == nullptr || !this->m_file->open(QIODevice::ReadWrite)) {
+        if (this->m_file != nullptr) {
+            delete (this->m_file);
+            this->m_file = nullptr;
+        }
+
+        return;
+    }
+
+    QByteArray ba = this->m_file->readAll();
+
+    QJsonParseError e;
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(ba, &e);
+    if(e.error != QJsonParseError::NoError || jsonDoc.isNull())
+    {
+        return;
+    }
+
+    if (jsonDoc.isObject()) {
+        QJsonObject obj = jsonDoc.object();
+
+        if (obj.contains("tryCount")) {
+            QJsonValue val = obj.value("tryCount");
+            this->tryMax = val.toInt(3);
+        }
+
+        if (obj.contains("accounts")) {
+            QJsonArray val = obj.value("accounts").toArray();
+
+            for (QJsonArray::iterator it = val.begin();
+                 it != val.end(); it++) {
+                QJsonObject acc = it.a->at(it.i).toObject();
+
+                this->users.append(Account(acc.value("account").toString(),
+                                           acc.value("passwd").toString(),
+                                           acc.value("memey").toDouble()));
+            }
+        }
+    }
+}
+
+AccountManage::~AccountManage()
+{
+    if (this->m_file->isWritable() && this->users.size()) {
+        QJsonObject root;
+        QJsonObject obj;
+        QJsonValue  val;
+        QJsonArray  accounts;
+
+        val = this->tryMax;
+        root.insert("tryCount", val);
+
+        for (QList<Account>::iterator it = this->users.begin();
+             it != this->users.end();
+             it++)
+        {
+            QJsonValue  account;
+            QJsonValue  passwd;
+            QJsonValue  memey;
+            QJsonObject obj;
+
+            account = it->getAccount();
+            passwd  = it->getPasswd();
+            memey   = it->getMomey();
+
+            obj.insert("account", account);
+            obj.insert("passwd", passwd);
+            obj.insert("memey", memey);
+
+            accounts.append(obj);
+        }
+
+        root.insert("accounts", accounts);
+
+
+        QJsonDocument doc(root);
+        QByteArray ba = doc.toJson(QJsonDocument::Indented);
+
+        this->m_file->resize(0);
+        this->m_file->write(ba);
+        this->m_file->close();
+    }
 }
 
 bool AccountManage::verifyAccount(QString account, QString passwd)

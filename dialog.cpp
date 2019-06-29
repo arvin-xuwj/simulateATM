@@ -11,7 +11,7 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->accMag = new AccountManage();
+    this->accMag = new AccountManage("~/config.json");
 
     this->resize(800, 600);
 
@@ -25,6 +25,7 @@ Dialog::Dialog(QWidget *parent) :
 
 Dialog::~Dialog()
 {
+    delete this->accMag;
     delete ui;
 }
 
@@ -210,6 +211,11 @@ void Dialog::on_btnQuKuanSure_clicked()
      */
 
     double memey = sz_memey.toDouble();
+
+    if (this->accMag->getBalance(this->m_account) < memey) {
+        QMessageBox::information(this, "提示信息", "账户余额不足", QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
 
     this->accMag->setBalance(this->m_account, memey * -1);
 

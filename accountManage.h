@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QList>
+#include <QFile>
 #include "account.h"
 
 class AccountManage
@@ -10,6 +11,7 @@ class AccountManage
 public:
     AccountManage();
     AccountManage(QString fileName);
+    ~AccountManage();
 
     bool verifyAccount(QString account, QString passwd);
     double getBalance(QString account);
@@ -22,7 +24,7 @@ private:
 
 private:
     QList<Account> users;
-
+    QFile           *m_file;
     int             tryMax;
 };
 

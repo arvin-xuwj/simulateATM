@@ -42,6 +42,13 @@ void AccountManage::setBalance(QString account, double momey)
     }
 }
 
+void AccountManage::changePasswd(QString account, QString newpasswd)
+{
+    if (getAccount(account) != nullptr) {
+        return getAccount(account)->setPasswd(newpasswd);
+    }
+}
+
 Account* AccountManage::getAccount(QString account)
 {
     for (QList<Account>::iterator it = this->users.begin();

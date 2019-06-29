@@ -14,6 +14,7 @@ public:
     bool verifyAccount(QString account, QString passwd);
     double getBalance(QString account);
     void   setBalance(QString account, double momey);
+    void   changePasswd(QString account, QString newpasswd);
 
 private:
     Account* getAccount(QString account);

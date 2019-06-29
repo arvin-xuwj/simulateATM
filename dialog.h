@@ -20,6 +20,7 @@ private:
        PAGE_QUERY,
        PAGE_SAVE,
        PAGE_QUKUAN,
+       PAGE_CHANGEPASSWD,
     };
 
     typedef enum PAGE_INDEX pageIndex;
@@ -35,6 +36,7 @@ private:
     void switchQuery();
     void switchSave();
     void switchQukuan();
+    void switchChangePasswd();
 
 private slots:
     void on_btnQuery_clicked();
@@ -48,6 +50,10 @@ private slots:
     void on_btnQuKuanSure_clicked();
 
     void on_btnQukuan_clicked();
+
+    void on_btnChangePasswd_clicked();
+
+    void on_btnSurePasswd_clicked();
 
 private:
     Ui::Dialog *ui;

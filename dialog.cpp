@@ -46,6 +46,9 @@ void Dialog::switchPage(pageIndex page)
     case PAGE_QUKUAN:
         switchQukuan();
         break;
+    case PAGE_CHANGEPASSWD:
+        switchChangePasswd();
+        break;
     default:
         switchWelcome();
     }
@@ -60,6 +63,7 @@ void Dialog::switchLogin()
     this->ui->btnQuery->hide();
     this->ui->btnQukuan->hide();
     this->ui->btnCunkuan->hide();
+    this->ui->btnChangePasswd->hide();
     this->ui->btnExit->hide();
     this->ui->lab_account->hide();
     this->ui->lab_account_display->hide();
@@ -79,6 +83,7 @@ void Dialog::switchWelcome()
     this->ui->btnQuery->show();
     this->ui->btnQukuan->show();
     this->ui->btnCunkuan->show();
+    this->ui->btnChangePasswd->show();
     this->ui->btnExit->show();
     this->ui->labLoginErr->hide();
 
@@ -126,6 +131,17 @@ void Dialog::switchQukuan()
     this->ui->btnCunkuan->show();
     this->ui->btnExit->show();
     this->ui->labLoginErr->hide();
+}
+
+void Dialog::switchChangePasswd()
+{
+    /*
+        修改密码信息;
+     */
+    this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->indexOf(this->ui->pageChangePasswd));
+    this->ui->lineEditOldPasswd->setText("");
+    this->ui->lineEditNewPasswd->setText("");
+    this->ui->lineEditNewPasswd2->setText("");
 }
 
 void Dialog::on_btnQuery_clicked()
@@ -199,4 +215,34 @@ void Dialog::on_btnQuKuanSure_clicked()
 void Dialog::on_btnQukuan_clicked()
 {
     switchPage(PAGE_QUKUAN);
+}
+
+void Dialog::on_btnChangePasswd_clicked()
+{
+    switchPage(PAGE_CHANGEPASSWD);
+}
+
+void Dialog::on_btnSurePasswd_clicked()
+{
+    QString oldPasswd = this->ui->lineEditOldPasswd->text();
+    QString newPasswd = this->ui->lineEditNewPasswd->text();
+    QString new2Passwd = this->ui->lineEditNewPasswd2->text();
+
+    if (oldPasswd.isEmpty() || newPasswd.isEmpty() || new2Passwd.isEmpty()) {
+        QMessageBox::information(this, "提示信息", "密码输入不能为空", QMessageBox::Yes, QMessageBox::Yes);
+        switchChangePasswd();
+        return;
+    }
+
+    if (this->accMag->verifyAccount(this->m_account, oldPasswd)) {
+        if (newPasswd == new2Passwd) {
+            this->accMag->changePasswd(this->m_account, newPasswd);
+            QMessageBox::information(this, "提示信息", "密码已修改, 请重新登陆", QMessageBox::Yes, QMessageBox::Yes);
+            switchPage(PAGE_LOGIN);
+            return;
+        }
+    }
+
+    QMessageBox::information(this, "提示信息", "密码输入错误", QMessageBox::Yes, QMessageBox::Yes);
+    switchChangePasswd();
 }
